@@ -1,147 +1,54 @@
-//Main file
-// function myFunc
-// {
-// var mydiv = document.getElementById("mydiv");
-// mydiv.innerHTML = "Hello World";
-// };
-// windows.onload = myFunc	();
-
-// function initialize(){
-//     cities();
-// };
-
-
-// function cities(){
-    
-//     var cityPop = [
-//         { 
-//             city: "Madison",
-//             population: 243344
-//         },
-//         {
-//             city: "Sauk City",
-//             population: 3472
-//         },
-//         {
-//             city: "New York",
-//             population: 8406000
-//         },
-//         {
-//             city: "Tokyo",
-//             population: 13230000
-//         }
-//     ];
-
-    
-//     $("#mydiv").append("<table>");
-    
-//     $("table").append("<tr>");
-    
-//     $("tr").append("<th>City</th><th>Population</th>");
-
-//     for (var i = 0; i < cityPop.length; i++){
-//         //assign longer html strings to a variable
-//         var rowHtml = "<tr><td>" + cityPop[i].city + "</td><td>" + cityPop[i].population + "</td></tr>";
-//         //add the row's html string to the table
-//         $("table").append(rowHtml);
-//     };
-// };
-
-// $(document).ready(initialize);
+//initialize the jQueryAjax function when the page loads
+function initialize(){
+    jQueryAjax();
+};
+	
+	//Create the AJAX function
+	function jQueryAjax (){
+		//Take in/get the path of the MegaCities.geojson and take in the settings (Datatype and callback success)
+		$.ajax("data/MegaCities.geojson",{
+				//specify the dataType as the file extenion of MegaCities
+				dataType: "json",
+				success: callback
+		});
+	};
+	
+	//make a callback function and print out the GeoJSON file as plain text
+	function callback(data){
+		console.log(JSON.stringify(data));
+	};
+	
+	//This shose that the data cannot be accessed outside of the callback function
+    console.log(mydata);
+	
+//call the initialize function to load the webpage
+window.onload = initialize();	
 
 
-///////////////////////////////////////////////////////////////////////
-//////////////////// /   /   /   /  /  /  /  /////////////////////////
-/////////////////// /   /   /   /  /  /  /  /////////////////////////
-////////////////// /   /   /   /  /  /  /  /////////////////////////
-///////////////// /   /   /   /  /  /  /  /////////////////////////
-//////////////// /   /   /   /  /  /  /  /////////////////////////
-/////////////// /   /   /   /  /  /  /  /////////////////////////
-////////////// /   /   /   /  /  /  /  /////////////////////////
-///////////// /   /   /   /  /  /  /  /////////////////////////
-//////////// /   /   /   /  /  /  /  /////////////////////////
-/////////// /   /   /   /  /  /  /  /////////////////////////
-////////// /   /   /   /  /  /  /  /////////////////////////
-///////// /   /   /   /  /  /  /  /////////////////////////
-//////// /   /   /   /  /  /  /  /////////////////////////
-/////// /   /   /   /  /  /  /  /////////////////////////
-////// /   /   /   /  /  /  /  /////////////////////////
-///// /   /   /   /  /  /  /  /////////////////////////
-//// /   /   /   /  /  /  /  /////////////////////////
-/// /   /   /   /  /  /  /  /////////////////////////
-// /   /   /   /  /  /  /  /////////////////////////
-///////////////////////////////////////////////////
 
-function addColumns(cityPop)
-{
-    
-    $('tr').each(function(i)
-    {
 
-    	if (i == 0)
-    	{
+//debug stuff
 
-    		$(this).apend('<th>City Size</th>');
-    	} 
-    	else 
-    	{
-
-    		var citySize;
-
-    		if (cityPop[i-1].population < 100000)
-    		{
-    			citySize = 'Small';
-
-    		} 
-    		else if (cityPop[i-1].population < 500000)
-    		{
-    			citysize = 'Medium';
-
-    		} 
-    		else
-    		{
-    			citySize = 'Large';
-    		}
-
-    		$this.append('<td' + citySize + '</td>');
-    	};
-    };
+function debugCallback(response){
+	
+	$(mydiv).append('GeoJSON data: ' + JSON.stringify(mydata));
 };
 
-function addEvents()
-{
+function debugAjax(){
+	
+	var mydata;
 
-	$('#table').mouseover(function()
-	{
-		
-		var color = "rgb(";
-
-		for (var i=0; i<3; i++)
-		{
-
-			var random = Math.round(Math.random() * 255);
-
-			color += "random";
-
-			if (i<2)
-			{
-				color += ",";
+	$.ajax("data/MegaCities.geojson", {
+		dataType: "json",
+		success: function(response){
 			
-			}
-			 else 
-			{
-				color += ")";
-			}
-		};
+				mydata = response;
+				
+			debugCallback(mydata);
+		}
+	});
 
-		$(this).css('color', color);
-	};
-
-	function clickMe()
-	{
-
-		alert('Hey, you clicked me!');
-	};
-
-	$('table').on('click', clickMe);
+	$(mydiv).append('<br>GeoJSON data:<br>' + JSON.stringify(mydata));
 };
+
+$(mydiv).append('GeoJSON data: ' + JSON.stringify(mydata));
